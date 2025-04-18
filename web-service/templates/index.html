@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Diabetic Retinopathy Detection</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Leaflet CSS for the map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>🧠 Diabetic Retinopathy Detection</h1>
+
+    <!-- Upload Form -->
+    <form action="/predict" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" required />
+        <button type="submit">📤 Upload & Predict</button>
+    </form>
+
+    <!-- RESULT -->
+    {% if result %}
+    <div class="result">
+        <h2>🩺 Prediction: <span class="highlight">{{ result }}</span> ({{ confidence }}%)</h2>
+        <img src="{{ image_path }}" alt="Uploaded Image" class="preview">
+    </div>
+    {% endif %}
+
+    <!-- CLINIC LOCATOR -->
+    {% if disease %}
+    <h2>🏥 Nearby Eye Clinics:</h2>
+    <button onclick="findClinics()">🔍 Find Clinics Near Me</button>
+    <div id="map"></div>
+    <div id="results">Searching for your location...</div>
+    <div class="back-home">
+        <a href="/"><button>🔙 Go to Home</button></a>
+    </div>
+    {% endif %}
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+    <!-- MAP & CLINIC LOGIC -->
+    <script>
+        let map;
+        function findClinics() {
+            navigator.geolocation.getCurrentPosition(function(pos) {
+                const lat = pos.coords.latitude;
+                const lon = pos.coords.longitude;
+
+                if (map) map.remove();
+                map = L.map('map').setView([lat, lon], 13);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; OpenStreetMap contributors'
+                }).addTo(map);
+                L.marker([lat, lon]).addTo(map).bindPopup("📍 You are here").openPopup();
+
+                const query = `[out:json];
+                (
+                    node(around:15000,${lat},${lon})[amenity=hospital];
+                    node(around:15000,${lat},${lon})[amenity=clinic];
+                    node(around:15000,${lat},${lon})[healthcare=doctor];
+                );
+                out body;`;
+
+                const url = 'https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(query);
+                fetch(url)
+                    .then(res => res.json())
+                    .then(data => {
+                        const results = document.getElementById('results');
+                        results.innerHTML = "";
+
+                        const keywords = ["eye", "vision", "retina", "ophthalmology", "optical", "clinic", "dr", "hospital"];
+                        function getDistanceKm(lat1, lon1, lat2, lon2) {
+                            const R = 6371;
+                            const dLat = (lat2 - lat1) * Math.PI / 180;
+                            const dLon = (lon2 - lon1) * Math.PI / 180;
+                            const a = Math.sin(dLat / 2) ** 2 +
+                                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                                Math.sin(dLon / 2) ** 2;
+                            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                            return R * c;
+                        }
+
+                        const filtered = data.elements
+                            .map(el => {
+                                const name = (el.tags.name || "").toLowerCase();
+                                const match = keywords.some(k => name.includes(k));
+                                const dist = getDistanceKm(lat, lon, el.lat, el.lon);
+                                return match ? {...el, distance: dist } : null;
+                            })
+                            .filter(el => el && el.distance <= 10)
+                            .sort((a, b) => a.distance - b.distance);
+
+                        if (filtered.length === 0) {
+                            results.innerHTML = "<p>No relevant eye clinics found nearby (within 10 km).</p>";
+                            return;
+                        }
+
+                        filtered.forEach(place => {
+                            const name = place.tags.name || "Clinic/Hospital";
+                            const latlon = `${place.lat},${place.lon}`;
+                            const directionLink = `https://www.google.com/maps/dir/?api=1&destination=${latlon}`;
+                            const card = `
+                                <div class="clinic-card">
+                                    <strong>${name}</strong><br>
+                                    📏 ${place.distance.toFixed(2)} km away<br>
+                                    <a href="${directionLink}" target="_blank">➡️ Get Directions</a>
+                                </div><hr>`;
+                            results.innerHTML += card;
+
+                            L.marker([place.lat, place.lon])
+                                .addTo(map)
+                                .bindPopup(`${name}<br><a href="${directionLink}" target="_blank">📍 Directions</a>`);
+                        });
+                    })
+                    .catch(err => {
+                        document.getElementById('results').innerHTML = "❌ Failed to fetch clinic data.";
+                        console.error(err);
+                    });
+            }, function(err) {
+                document.getElementById('results').innerHTML = "❌ Location access denied.";
+                console.error(err.message);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  web-service:
+    build:
+      context: ./web-service
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - PREDICTION_SERVICE_URL=http://prediction-service:5001
+    volumes:
+      - ./web-service/static/uploads:/app/static/uploads
+    depends_on:
+      - prediction-service
+    networks:
+      - retinopathy-network
+
+  prediction-service:
+    build:
+      context: ./prediction-service
+      dockerfile: Dockerfile
+    networks:
+      - retinopathy-network
+
+networks:
+  retinopathy-network:
+    driver: bridge

@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+        - name: web
+          image: pavan020504/web-service
+          ports:
+            - containerPort: 5000
+          envFrom:
+            - configMapRef:
+                name: web-config
+          volumeMounts:
+            - name: upload-volume
+              mountPath: /app/static/uploads
+      volumes:
+        - name: upload-volume
+          emptyDir: {}

@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: prediction-service
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: prediction
@@ -15,5 +15,6 @@ spec:
       containers:
         - name: prediction
           image: pavan020504/prediction-service
+          imagePullPolicy: Always
           ports:
             - containerPort: 5001

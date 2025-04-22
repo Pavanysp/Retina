@@ -8,7 +8,7 @@ app.config['UPLOAD_FOLDER'] = 'static/uploads'
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 # Get backend URL from environment or use default for local testing
-PREDICTION_SERVICE_URL = os.environ.get('PREDICTION_SERVICE_URL', 'http://prediction-service:5001')
+PREDICTION_SERVICE_URL = os.environ.get('PREDICTION_SERVICE_URL', 'http://127.0.0.1:5001')
 
 @app.route('/')
 def index():

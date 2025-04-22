@@ -72,6 +72,14 @@ def predict():
             }
         }
         
+        # Optional: Log the file deletion to confirm it happened
+        print(f"Deleting the uploaded file after processing: {file.filename}")
+        
+        # Delete the file after prediction
+        file_path = os.path.join('static/uploads', file.filename)  # Assuming the file is temporarily saved here
+        if os.path.exists(file_path):
+            os.remove(file_path)
+        
         return jsonify(result)
         
     except Exception as e:

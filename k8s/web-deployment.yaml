@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: web-service
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: web
@@ -15,6 +15,7 @@ spec:
       containers:
         - name: web
           image: pavan020504/web-service
+          imagePullPolicy: Always
           ports:
             - containerPort: 5000
           envFrom:

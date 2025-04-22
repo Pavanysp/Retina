@@ -5,7 +5,7 @@
     <title>Diabetic Retinopathy Detection</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Leaflet CSS for the map -->
+    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
@@ -23,22 +23,21 @@
     <div class="result">
         <h2>🩺 Prediction: <span class="highlight">{{ result }}</span> ({{ confidence }}%)</h2>
         <img src="{{ image_path }}" alt="Uploaded Image" class="preview">
-        <div class="back-home">
-            <a href="/"><button>🔙 Go to Home</button></a>
-        </div>
     </div>
     {% endif %}
 
     <!-- CLINIC LOCATOR -->
     {% if disease %}
     <h2>🏥 Nearby Eye Clinics:</h2>
-    <button onclick="findClinics()">🔍 Find Clinics Near Me</button>
+    <button onclick="findClinics()">🔍 Find Eye Clinics Near Me</button>
     <div id="map"></div>
     <div id="results">Searching for your location...</div>
+    {% endif %}
+
+    <!-- ✅ Always show Home button -->
     <div class="back-home">
         <a href="/"><button>🔙 Go to Home</button></a>
     </div>
-    {% endif %}
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
@@ -60,9 +59,9 @@
 
                 const query = `[out:json];
                 (
-                    node(around:15000,${lat},${lon})[amenity=hospital];
-                    node(around:15000,${lat},${lon})[amenity=clinic];
-                    node(around:15000,${lat},${lon})[healthcare=doctor];
+                    node(around:5000,${lat},${lon})[amenity=hospital];
+                    node(around:5000,${lat},${lon})[healthcare=doctor];
+                    node(around:5000,${lat},${lon})[amenity=clinic];
                 );
                 out body;`;
 
@@ -73,7 +72,8 @@
                         const results = document.getElementById('results');
                         results.innerHTML = "";
 
-                        const keywords = ["eye", "vision", "retina", "ophthalmology", "optical", "clinic", "dr", "hospital"];
+                        const keywords = ["eye", "vision", "retina", "ophthalmology", "optical", "dr", "clinic", "hospital"];
+
                         function getDistanceKm(lat1, lon1, lat2, lon2) {
                             const R = 6371;
                             const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -92,11 +92,11 @@
                                 const dist = getDistanceKm(lat, lon, el.lat, el.lon);
                                 return match ? {...el, distance: dist } : null;
                             })
-                            .filter(el => el && el.distance <= 10)
-                            .sort((a, b) => a.distance - b.distance);
+                            .filter(el => el && el.distance <= 5)
+                            .sort((a, b) => a.distance - b.distance); // Sorted by distance
 
                         if (filtered.length === 0) {
-                            results.innerHTML = "<p>No relevant eye clinics found nearby (within 10 km).</p>";
+                            results.innerHTML = "<p>😞 No relevant eye clinics found nearby (within 5 km).</p>";
                             return;
                         }
 

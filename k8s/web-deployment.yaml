@@ -23,7 +23,8 @@ spec:
                 name: web-config
           volumeMounts:
             - name: upload-volume
-              mountPath: /app/static/uploads
+              mountPath: /app/static/uploads  # Path where your app expects the uploads
       volumes:
         - name: upload-volume
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: upload-pvc  # Link to the PVC defined above

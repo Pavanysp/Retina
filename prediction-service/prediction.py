@@ -3,19 +3,38 @@ import tensorflow as tf
 import numpy as np
 from PIL import Image
 import os
+import socket
+import json
+import logging
+import sys
 
+# === Embedded Logger Setup ===
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+handler = logging.StreamHandler(sys.stdout)
+formatter = logging.Formatter('%(message)s')  # raw JSON format
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+
+def log_event(service_name, message):
+    log = {
+        "service": service_name,
+        "host": socket.gethostname(),
+        "message": message
+    }
+    logger.info(json.dumps(log))
+
+# === Flask app ===
 app = Flask(__name__)
 MODEL_PATH = 'retina_ensemble_model.h5'
 model = None
 
-# Load the model at startup
 def load_model():
     global model
-    print("Loading retinopathy model...")
+    log_event("prediction-service", "Loading retinopathy model...")
     model = tf.keras.models.load_model(MODEL_PATH)
-    print("Model loaded successfully")
+    log_event("prediction-service", "Model loaded successfully")
 
-# Add a root route for health checks
 @app.route('/', methods=['GET'])
 def home():
     return jsonify({"status": "Prediction Service Running", 
@@ -27,7 +46,6 @@ def health():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    # Initialize model if not already loaded
     global model
     if model is None:
         load_model()
@@ -40,20 +58,15 @@ def predict():
         return jsonify({'error': 'No selected file'}), 400
     
     try:
-        # Process the image
+        log_event("prediction-service", f"Received image: {file.filename}")
         img = Image.open(file.stream)
-        img = img.resize((224, 224))  # Adjust size according to your model's requirements
+        img = img.resize((224, 224))
         img_array = np.array(img) / 255.0
-        
-        # Add batch dimension if needed
         if len(img_array.shape) == 3:
             img_array = np.expand_dims(img_array, axis=0)
         
-        # Make prediction
         predictions = model.predict(img_array)
-        
-        # Process prediction results
-        prediction_class = np.argmax(predictions, axis=1)[0]
+        prediction_class = int(np.argmax(predictions, axis=1)[0])
         confidence = float(predictions[0][prediction_class])
         
         severity_map = {
@@ -66,26 +79,19 @@ def predict():
         
         result = {
             'prediction': {
-                'class': int(prediction_class),
+                'class': prediction_class,
                 'severity': severity_map.get(prediction_class, "Unknown"),
                 'confidence': confidence
             }
         }
-        
-        # Optional: Log the file deletion to confirm it happened
-        print(f"Deleting the uploaded file after processing: {file.filename}")
-        
-        # Delete the file after prediction
-        file_path = os.path.join('static/uploads', file.filename)  # Assuming the file is temporarily saved here
-        if os.path.exists(file_path):
-            os.remove(file_path)
-        
+
+        log_event("prediction-service", f"Prediction result: {result}")
         return jsonify(result)
-        
+    
     except Exception as e:
+        log_event("prediction-service", f"Error during prediction: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    # Load model at startup
     load_model()
     app.run(host='0.0.0.0', port=5001, debug=True)

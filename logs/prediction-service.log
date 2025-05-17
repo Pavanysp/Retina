@@ -1,0 +1,44 @@
+{"timestamp": "2025-05-17T14:28:32+0000", "service": "prediction-service", "level": "info", "message": "Logger configured successfully", "host": "461e98787cac"}
+{"timestamp": "2025-05-17T14:28:32+0000", "service": "prediction-service", "level": "info", "message": "Loading model...", "host": "461e98787cac"}
+{"timestamp": "2025-05-17T14:28:35+0000", "service": "prediction-service", "level": "info", "message": "Model loaded successfully from retina_ensemble_model.h5", "host": "461e98787cac"}
+{"timestamp": "2025-05-17T14:28:36+0000", "service": "prediction-service", "level": "info", "message": "Model summary: None", "host": "461e98787cac"}
+{"timestamp": "2025-05-17T14:28:36+0000", "service": "prediction-service", "level": "info", "message": "Starting prediction service on port 5001", "host": "461e98787cac"}
+{"timestamp": "2025-05-17T14:29:17+0000", "service": "prediction-service", "level": "info", "message": "Processing file: 6459a36f-01ce-46c8-8a0d-94f228f60aa3_Severe_DR_3.png", "host": "461e98787cac"}
+{"timestamp": "2025-05-17T14:29:17+0000", "service": "prediction-service", "level": "info", "message": "Making prediction...", "host": "461e98787cac"}
+{"timestamp": "2025-05-17T14:29:19+0000", "service": "prediction-service", "level": "info", "message": "Prediction successful - Class: 2 (Moderate DR), Confidence: 40.15%, File: 6459a36f-01ce-46c8-8a0d-94f228f60aa3_Severe_DR_3.png", "host": "461e98787cac"}
+{"timestamp": "2025-05-17T14:31:07+0000", "service": "prediction-service", "level": "info", "message": "Logger configured successfully", "host": "461e98787cac"}
+{"timestamp": "2025-05-17T14:31:07+0000", "service": "prediction-service", "level": "info", "message": "Loading model...", "host": "461e98787cac"}
+{"timestamp": "2025-05-17T14:31:11+0000", "service": "prediction-service", "level": "info", "message": "Model loaded successfully from retina_ensemble_model.h5", "host": "461e98787cac"}
+{"timestamp": "2025-05-17T14:31:12+0000", "service": "prediction-service", "level": "info", "message": "Model summary: None", "host": "461e98787cac"}
+{"timestamp": "2025-05-17T14:31:12+0000", "service": "prediction-service", "level": "info", "message": "Starting prediction service on port 5001", "host": "461e98787cac"}
+{"timestamp": "2025-05-17T14:34:03+0000", "service": "prediction-service", "level": "info", "message": "Logger configured successfully", "host": "617fa2f8dd7d"}
+{"timestamp": "2025-05-17T14:34:03+0000", "service": "prediction-service", "level": "info", "message": "Loading model...", "host": "617fa2f8dd7d"}
+{"timestamp": "2025-05-17T14:34:08+0000", "service": "prediction-service", "level": "info", "message": "Model loaded successfully from retina_ensemble_model.h5", "host": "617fa2f8dd7d"}
+{"timestamp": "2025-05-17T14:34:08+0000", "service": "prediction-service", "level": "info", "message": "Model summary: None", "host": "617fa2f8dd7d"}
+{"timestamp": "2025-05-17T14:34:08+0000", "service": "prediction-service", "level": "info", "message": "Starting prediction service on port 5001", "host": "617fa2f8dd7d"}
+{"timestamp": "2025-05-17T14:44:14+0000", "service": "prediction-service", "level": "info", "message": "Logger configured successfully", "host": "c7ab997642dd"}
+{"timestamp": "2025-05-17T14:44:14+0000", "service": "prediction-service", "level": "info", "message": "Loading model...", "host": "c7ab997642dd"}
+{"timestamp": "2025-05-17T14:44:18+0000", "service": "prediction-service", "level": "info", "message": "Model loaded successfully from retina_ensemble_model.h5", "host": "c7ab997642dd"}
+{"timestamp": "2025-05-17T14:44:19+0000", "service": "prediction-service", "level": "info", "message": "Model summary: None", "host": "c7ab997642dd"}
+{"timestamp": "2025-05-17T14:44:19+0000", "service": "prediction-service", "level": "info", "message": "Starting prediction service on port 5001", "host": "c7ab997642dd"}
+{"timestamp": "2025-05-17T14:51:57+0000", "service": "prediction-service", "level": "info", "message": "Logger configured successfully", "host": "cc479d306632"}
+{"timestamp": "2025-05-17T14:51:57+0000", "service": "prediction-service", "level": "info", "message": "Loading model...", "host": "cc479d306632"}
+{"timestamp": "2025-05-17T14:52:00+0000", "service": "prediction-service", "level": "info", "message": "Model loaded successfully from retina_ensemble_model.h5", "host": "cc479d306632"}
+{"timestamp": "2025-05-17T14:52:01+0000", "service": "prediction-service", "level": "info", "message": "Model summary: None", "host": "cc479d306632"}
+{"timestamp": "2025-05-17T14:52:01+0000", "service": "prediction-service", "level": "info", "message": "Starting prediction service on port 5001", "host": "cc479d306632"}
+{"timestamp": "2025-05-17T15:05:03+0000", "service": "prediction-service", "level": "info", "message": "Logger configured successfully", "host": "cc479d306632"}
+{"timestamp": "2025-05-17T15:05:03+0000", "service": "prediction-service", "level": "info", "message": "Loading model...", "host": "cc479d306632"}
+{"timestamp": "2025-05-17T15:05:05+0000", "service": "prediction-service", "level": "info", "message": "Model loaded successfully from retina_ensemble_model.h5", "host": "cc479d306632"}
+{"timestamp": "2025-05-17T15:05:05+0000", "service": "prediction-service", "level": "info", "message": "Model summary: None", "host": "cc479d306632"}
+{"timestamp": "2025-05-17T15:05:05+0000", "service": "prediction-service", "level": "info", "message": "Starting prediction service on port 5001", "host": "cc479d306632"}
+{"timestamp": "2025-05-17T15:06:51+0000", "service": "prediction-service", "level": "info", "message": "Logger configured successfully", "host": "fc2dba48d1dc"}
+{"timestamp": "2025-05-17T15:06:51+0000", "service": "prediction-service", "level": "info", "message": "Loading model...", "host": "fc2dba48d1dc"}
+{"timestamp": "2025-05-17T15:06:54+0000", "service": "prediction-service", "level": "info", "message": "Model loaded successfully from retina_ensemble_model.h5", "host": "fc2dba48d1dc"}
+{"timestamp": "2025-05-17T15:06:55+0000", "service": "prediction-service", "level": "info", "message": "Model summary: None", "host": "fc2dba48d1dc"}
+{"timestamp": "2025-05-17T15:06:55+0000", "service": "prediction-service", "level": "info", "message": "Starting prediction service on port 5001", "host": "fc2dba48d1dc"}
+{"timestamp": "2025-05-17T15:09:25+0000", "service": "prediction-service", "level": "info", "message": "Processing file: 3d56efe5-6aee-441d-8ed2-cfd9bc18c0f4_Severe_DR_3.png", "host": "fc2dba48d1dc"}
+{"timestamp": "2025-05-17T15:09:25+0000", "service": "prediction-service", "level": "info", "message": "Making prediction...", "host": "fc2dba48d1dc"}
+{"timestamp": "2025-05-17T15:09:27+0000", "service": "prediction-service", "level": "info", "message": "Prediction successful - Class: 2 (Moderate DR), Confidence: 40.15%, File: 3d56efe5-6aee-441d-8ed2-cfd9bc18c0f4_Severe_DR_3.png", "host": "fc2dba48d1dc"}
+{"timestamp": "2025-05-17T15:12:26+0000", "service": "prediction-service", "level": "info", "message": "Processing file: f1180ae2-910b-4e36-b111-cf588ed562d3_Severe_DR.png", "host": "fc2dba48d1dc"}
+{"timestamp": "2025-05-17T15:12:26+0000", "service": "prediction-service", "level": "info", "message": "Making prediction...", "host": "fc2dba48d1dc"}
+{"timestamp": "2025-05-17T15:12:26+0000", "service": "prediction-service", "level": "info", "message": "Prediction successful - Class: 2 (Moderate DR), Confidence: 39.24%, File: f1180ae2-910b-4e36-b111-cf588ed562d3_Severe_DR.png", "host": "fc2dba48d1dc"}

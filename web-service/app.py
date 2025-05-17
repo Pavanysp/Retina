@@ -1,62 +1,101 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for
-import requests
 import os
 import uuid
 import socket
 import json
 import logging
-import sys
+from flask import Flask, render_template, request, jsonify
+import requests
+from werkzeug.utils import secure_filename
 
-# === Embedded Logger Setup ===
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
-handler = logging.StreamHandler(sys.stdout)
-formatter = logging.Formatter('%(message)s')
-handler.setFormatter(formatter)
-logger.addHandler(handler)
-
-def log_event(service_name, message):
-    log = {
-        "service": service_name,
-        "host": socket.gethostname(),
-        "message": message
-    }
-    logger.info(json.dumps(log))
-
-# === Flask app ===
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-PREDICTION_SERVICE_URL = os.environ.get('PREDICTION_SERVICE_URL', 'http://127.0.0.1:5001')
+def setup_logger():
+    log_dir = '/var/log/app'
+    os.makedirs(log_dir, exist_ok=True)
+
+    logger = logging.getLogger('web-service')
+    logger.setLevel(logging.INFO)
+    logger.handlers = []
+
+    file_handler = logging.FileHandler(f'{log_dir}/web-service.log', mode='a')
+    file_handler.setLevel(logging.INFO)
+
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.INFO)
+
+    class JSONFormatter(logging.Formatter):
+        def format(self, record):
+            log_record = {
+                "timestamp": self.formatTime(record, "%Y-%m-%dT%H:%M:%S%z"),
+                "service": "web-service",
+                "level": record.levelname.lower(),
+                "message": record.getMessage(),
+                "host": socket.gethostname()
+            }
+            return json.dumps(log_record)
+
+    formatter = JSONFormatter()
+    file_handler.setFormatter(formatter)
+    console_handler.setFormatter(formatter)
+
+    logger.addHandler(file_handler)
+    logger.addHandler(console_handler)
+
+    logger.info("Logger configured successfully")
+    return logger
+
+logger = setup_logger()
+
+PREDICTION_SERVICE_URL = os.environ.get('PREDICTION_SERVICE_URL', 'http://prediction-service:5001')
+ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png'}
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/')
 def index():
+    logger.info("Accessed index page")
     return render_template('index.html')
+
+@app.route('/health')
+def health():
+    logger.info("Health check requested")
+    return jsonify(status='ok'), 200
 
 @app.route('/predict', methods=['POST'])
 def predict():
     if 'file' not in request.files:
-        return redirect(url_for('index'))
-    
+        logger.warning("No file uploaded")
+        return render_template('index.html', error="No file uploaded")
+
     file = request.files['file']
     if file.filename == '':
-        return redirect(url_for('index'))
-    
-    filename = f"{uuid.uuid4()}_{file.filename}"
-    filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    file.save(filepath)
+        logger.warning("No file selected")
+        return render_template('index.html', error="No file selected")
 
-    log_event("web-service", f"Image saved for prediction: {filepath}")
-    
+    if not allowed_file(file.filename):
+        logger.warning(f"Invalid file type: {file.filename}")
+        return render_template('index.html', error="Invalid file type (.jpg, .jpeg, .png only)")
+
     try:
+        filename = f"{uuid.uuid4()}_{secure_filename(file.filename)}"
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(filepath)
+        logger.info(f"Saved uploaded image: {filename}")
+
         with open(filepath, 'rb') as f:
-            files = {'file': f}
-            response = requests.post(f"{PREDICTION_SERVICE_URL}/predict", files=files)
-        
+            response = requests.post(
+                f"{PREDICTION_SERVICE_URL}/predict",
+                files={'file': f},
+                timeout=10
+            )
+
         if response.status_code == 200:
             result_data = response.json()
-            prediction = result_data['prediction']
+            prediction = result_data.get('prediction', {})
+
             severity_map = {
                 0: "No DR",
                 1: "Mild DR",
@@ -64,30 +103,41 @@ def predict():
                 3: "Severe DR",
                 4: "Proliferative DR"
             }
-            result_text = severity_map.get(prediction['class'], "Unknown")
-            confidence = round(prediction['confidence'] * 100, 2)
-            show_clinics = prediction['class'] > 0
 
-            log_event("web-service", f"Prediction: {result_text} with {confidence}% confidence")
-            
-            rendered = render_template('index.html', 
-                                       result=result_text,
-                                       confidence=confidence,
-                                       image_path=f"/static/uploads/{filename}",
-                                       disease=show_clinics)
+            result_class = prediction.get('class', -1)
+            confidence = round(prediction.get('confidence', 0.0) * 100, 2)
+            result_text = severity_map.get(result_class, "Unknown")
 
-            # Schedule file deletion after render
-            #os.remove(filepath)
-            #log_event("web-service", f"Deleted uploaded file: {filepath}")
-            return rendered
+            logger.info(
+                f"Prediction successful - Result: {result_text}, Confidence: {confidence}%, File: {filename}"
+            )
+
+            return render_template(
+                'index.html',
+                result=result_text,
+                confidence=confidence,
+                image_path=f"/static/uploads/{filename}",
+                disease=result_class > 0
+            )
 
         else:
-            log_event("web-service", f"Prediction service error: {response.status_code}")
+            error_msg = f"Prediction service error: {response.status_code} - {response.text}"
+            logger.error(error_msg)
             return render_template('index.html', error="Prediction service error")
-    
+
+    except requests.exceptions.Timeout:
+        logger.error("Prediction service timeout")
+        return render_template('index.html', error="Prediction service timeout")
+
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Prediction service connection error: {str(e)}")
+        return render_template('index.html', error="Service unavailable")
+
     except Exception as e:
-        log_event("web-service", f"Frontend error: {str(e)}")
-        return render_template('index.html', error=f"Error: {str(e)}")
+        logger.error(f"Unexpected error during prediction: {str(e)}", exc_info=True)
+        return render_template('index.html', error="An unexpected error occurred")
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+    logger.info("Starting web service")
+    app.run(host='0.0.0.0', port=5000)

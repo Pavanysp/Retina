@@ -1,0 +1,24 @@
+{"timestamp": "2025-05-17T14:28:26+0000", "service": "web-service", "level": "info", "message": "Logger configured successfully", "host": "a4febf77c89b"}
+{"timestamp": "2025-05-17T14:28:26+0000", "service": "web-service", "level": "info", "message": "Starting web service", "host": "a4febf77c89b"}
+{"timestamp": "2025-05-17T14:29:11+0000", "service": "web-service", "level": "info", "message": "Accessed index page", "host": "a4febf77c89b"}
+{"timestamp": "2025-05-17T14:29:17+0000", "service": "web-service", "level": "info", "message": "Saved uploaded image: 6459a36f-01ce-46c8-8a0d-94f228f60aa3_Severe_DR_3.png", "host": "a4febf77c89b"}
+{"timestamp": "2025-05-17T14:29:19+0000", "service": "web-service", "level": "info", "message": "Prediction successful - Result: Moderate DR, Confidence: 40.15%, File: 6459a36f-01ce-46c8-8a0d-94f228f60aa3_Severe_DR_3.png", "host": "a4febf77c89b"}
+{"timestamp": "2025-05-17T14:31:01+0000", "service": "web-service", "level": "info", "message": "Logger configured successfully", "host": "a4febf77c89b"}
+{"timestamp": "2025-05-17T14:31:01+0000", "service": "web-service", "level": "info", "message": "Starting web service", "host": "a4febf77c89b"}
+{"timestamp": "2025-05-17T14:32:39+0000", "service": "web-service", "level": "info", "message": "Accessed index page", "host": "a4febf77c89b"}
+{"timestamp": "2025-05-17T14:33:56+0000", "service": "web-service", "level": "info", "message": "Logger configured successfully", "host": "48ee1105e899"}
+{"timestamp": "2025-05-17T14:33:56+0000", "service": "web-service", "level": "info", "message": "Starting web service", "host": "48ee1105e899"}
+{"timestamp": "2025-05-17T14:44:09+0000", "service": "web-service", "level": "info", "message": "Logger configured successfully", "host": "0285cc57385b"}
+{"timestamp": "2025-05-17T14:44:09+0000", "service": "web-service", "level": "info", "message": "Starting web service", "host": "0285cc57385b"}
+{"timestamp": "2025-05-17T14:51:52+0000", "service": "web-service", "level": "info", "message": "Logger configured successfully", "host": "512e4336748f"}
+{"timestamp": "2025-05-17T14:51:52+0000", "service": "web-service", "level": "info", "message": "Starting web service", "host": "512e4336748f"}
+{"timestamp": "2025-05-17T15:05:00+0000", "service": "web-service", "level": "info", "message": "Logger configured successfully", "host": "512e4336748f"}
+{"timestamp": "2025-05-17T15:05:00+0000", "service": "web-service", "level": "info", "message": "Starting web service", "host": "512e4336748f"}
+{"timestamp": "2025-05-17T15:06:46+0000", "service": "web-service", "level": "info", "message": "Logger configured successfully", "host": "627094e6b9f1"}
+{"timestamp": "2025-05-17T15:06:46+0000", "service": "web-service", "level": "info", "message": "Starting web service", "host": "627094e6b9f1"}
+{"timestamp": "2025-05-17T15:09:25+0000", "service": "web-service", "level": "info", "message": "Saved uploaded image: 3d56efe5-6aee-441d-8ed2-cfd9bc18c0f4_Severe_DR_3.png", "host": "627094e6b9f1"}
+{"timestamp": "2025-05-17T15:09:27+0000", "service": "web-service", "level": "info", "message": "Prediction successful - Result: Moderate DR, Confidence: 40.15%, File: 3d56efe5-6aee-441d-8ed2-cfd9bc18c0f4_Severe_DR_3.png", "host": "627094e6b9f1"}
+{"timestamp": "2025-05-17T15:10:05+0000", "service": "web-service", "level": "info", "message": "Accessed index page", "host": "627094e6b9f1"}
+{"timestamp": "2025-05-17T15:12:26+0000", "service": "web-service", "level": "info", "message": "Saved uploaded image: f1180ae2-910b-4e36-b111-cf588ed562d3_Severe_DR.png", "host": "627094e6b9f1"}
+{"timestamp": "2025-05-17T15:12:26+0000", "service": "web-service", "level": "info", "message": "Prediction successful - Result: Moderate DR, Confidence: 39.24%, File: f1180ae2-910b-4e36-b111-cf588ed562d3_Severe_DR.png", "host": "627094e6b9f1"}
+{"timestamp": "2025-05-17T15:13:01+0000", "service": "web-service", "level": "info", "message": "Accessed index page", "host": "627094e6b9f1"}

@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <title>Diabetic Retinopathy Detection</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
@@ -33,6 +31,8 @@
     <div id="map"></div>
     <div id="results">Searching for your location...</div>
     {% endif %}
+
+    
 
     <!-- ✅ Always show Home button -->
     <div class="back-home">
@@ -93,7 +93,7 @@
                                 return match ? {...el, distance: dist } : null;
                             })
                             .filter(el => el && el.distance <= 5)
-                            .sort((a, b) => a.distance - b.distance); // Sorted by distance
+                            .sort((a, b) => a.distance - b.distance);
 
                         if (filtered.length === 0) {
                             results.innerHTML = "<p>😞 No relevant eye clinics found nearby (within 5 km).</p>";
@@ -124,6 +124,27 @@
             }, function(err) {
                 document.getElementById('results').innerHTML = "❌ Location access denied.";
                 console.error(err.message);
+            });
+        }
+
+        // 🔁 Doctor Login → Reload model from microservice running at http://localhost:6001/reload
+        function doctorLogin() {
+            const status = document.getElementById('reload-status');
+            status.innerHTML = "🔄 Reloading model...";
+            fetch('http://localhost:6001', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(res => {
+                if (!res.ok) throw new Error("Reload failed");
+                return res.json();
+            })
+            .then(data => {
+                status.innerHTML = `✅ ${data.message || 'Model reloaded successfully.'}`;
+            })
+            .catch(err => {
+                console.error(err);
+                status.innerHTML = "❌ Error reloading model.";
             });
         }
     </script>

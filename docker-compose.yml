@@ -12,13 +12,9 @@ services:
       - PREDICTION_SERVICE_URL=http://prediction-service:5001
     volumes:
       - ./web-service/static/uploads:/app/static/uploads
+      - ./logs:/var/log/app
     depends_on:
       - prediction-service
-    # Uncomment the following if using logstash for logging:
-    # logging:
-    #   driver: "gelf"
-    #   options:
-    #     gelf-address: "udp://logstash:12201"
     networks:
       - retinopathy-network
 
@@ -29,11 +25,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5001:5001"
-    # Uncomment the following if using logstash for logging:
-    # logging:
-    #   driver: "gelf"
-    #   options:
-    #     gelf-address: "udp://logstash:12201"
+    volumes:
+      - ./logs:/var/log/app
     networks:
       - retinopathy-network
 
@@ -54,14 +47,15 @@ services:
       - "9200:9200"
     networks:
       - retinopathy-network
-
+  
   # Logstash
   logstash:
     image: docker.elastic.co/logstash/logstash:7.17.0
     volumes:
       - ./logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+      - ./logs:/var/log/app
     ports:
-      - "12201:12201/udp"
+      - "5044:5044"
     depends_on:
       - elasticsearch
     networks:
@@ -82,6 +76,5 @@ services:
 networks:
   retinopathy-network:
     driver: bridge
-
 volumes:
   elasticsearch-data:

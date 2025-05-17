@@ -11,7 +11,7 @@ spec:
         - retina.local
       secretName: tls-secret  # Use cert-manager or create your own
   rules:
-    - host: retinopathy.local
+    - host: retina.local
       http:
         paths:
           - path: /

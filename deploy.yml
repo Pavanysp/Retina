@@ -1,0 +1,13 @@
+---
+- name: Deploy with Docker Compose
+  hosts: local
+  become: true
+
+  tasks:
+    - name: Copy docker-compose file to temp location
+      copy:
+        src: docker-compose.yml
+        dest: /tmp/docker-compose.yml
+
+    - name: Run docker-compose up
+      command: docker-compose -f /tmp/docker-compose.yml up -d

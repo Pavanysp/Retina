@@ -18,9 +18,9 @@ pipeline {
                 sh '''
                 echo "Building Docker images"
                 cd web-service
-                sudo docker build -t ${DOCKER_IMAGE} .
+                docker build -t ${DOCKER_IMAGE} .
                 cd ../prediction-service
-                sudo docker build -t ${PREDICTION_IMAGE} .
+                docker build -t ${PREDICTION_IMAGE} .
                 '''
             }
         }
@@ -32,22 +32,21 @@ pipeline {
                                                   passwordVariable: 'DOCKER_PASS')]) {
                     sh '''
                     echo "Logging in to Docker Hub"
-                    echo "${DOCKER_PASS}" | sudo docker login -u "${DOCKER_USER}" --password-stdin
+                    echo "${DOCKER_PASS}" | docker login -u "${DOCKER_USER}" --password-stdin
 
                     echo "Pushing images"
-                    sudo docker push ${DOCKER_IMAGE}
-                    sudo docker push ${PREDICTION_IMAGE}
+                    docker push ${DOCKER_IMAGE}
+                    docker push ${PREDICTION_IMAGE}
                     '''
                 }
             }
         }
 
-        stage('Run Docker Compose') {
+        stage('Run Ansible Playbook') {
             steps {
                 sh '''
-                echo "Running docker-compose"
-                sudo docker-compose down || true
-                sudo docker-compose up -d
+                echo "Running Ansible Playbook using existing files"
+                ansible-playbook -i hosts.ini deploy.yml
                 '''
             }
         }
@@ -55,8 +54,9 @@ pipeline {
         stage('Start Minikube') {
             steps {
                 sh '''
-                echo "Starting Minikube"
-                minikube start --driver=docker --wait=none || true
+                echo "Starting Minikube locally without SSH or VM"
+                minikube delete || true
+                minikube start --wait=none
                 '''
             }
         }
@@ -64,12 +64,6 @@ pipeline {
         stage('Apply Kubernetes Configs') {
             steps {
                 sh '''
-                echo "Setting KUBECONFIG for kubectl"
-                export KUBECONFIG=$(minikube kubeconfig)
-
-                echo "Verifying kubectl connection"
-                kubectl get nodes
-
                 echo "Applying Kubernetes manifests"
                 kubectl apply -f k8s/ --validate=false
                 '''
@@ -78,8 +72,8 @@ pipeline {
 
         stage('Expose via DNS') {
             steps {
-                echo 'Make sure minikube tunnel is running: run `minikube tunnel` in background'
-                echo 'Then access your app at: https://retina.local'
+                echo 'Ensure minikube tunnel is running: open a terminal and run `minikube tunnel`'
+                echo 'Then visit your app at: https://retina.local'
             }
         }
     }

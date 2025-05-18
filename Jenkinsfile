@@ -56,7 +56,7 @@ pipeline {
             steps {
                 sh '''
                 echo "Starting Minikube"
-                minikube start --driver=docker || true
+                minikube start --driver=docker --wait=none || true
                 '''
             }
         }
@@ -64,8 +64,14 @@ pipeline {
         stage('Apply Kubernetes Configs') {
             steps {
                 sh '''
+                echo "Setting KUBECONFIG for kubectl"
+                export KUBECONFIG=$(minikube kubeconfig)
+
+                echo "Verifying kubectl connection"
+                kubectl get nodes
+
                 echo "Applying Kubernetes manifests"
-                kubectl apply -f k8s/
+                kubectl apply -f k8s/ --validate=false
                 '''
             }
         }

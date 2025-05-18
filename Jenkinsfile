@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "pavan020504/retina-web-service"
-        PREDICTION_IMAGE = "pavan020504/retina-prediction-service"
+        DOCKER_IMAGE = "pavan020504/web-service"
+        PREDICTION_IMAGE = "pavan020504/prediction-service"
     }
 
     stages {

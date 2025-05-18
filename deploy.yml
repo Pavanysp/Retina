@@ -4,10 +4,7 @@
   become: true
 
   tasks:
-    - name: Copy docker-compose file to temp location
-      copy:
-        src: docker-compose.yml
-        dest: /tmp/docker-compose.yml
-
-    - name: Run docker-compose up
-      command: docker-compose -f /tmp/docker-compose.yml up -d
+    - name: Run docker-compose up directly from workspace
+      command: docker-compose -f docker-compose.yml up -d
+      args:
+        chdir: "{{ lookup('env', 'WORKSPACE') | default('/var/lib/jenkins/workspace/Retina') }}"

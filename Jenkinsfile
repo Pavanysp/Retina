@@ -88,7 +88,7 @@ pipeline {
 
         stage('Expose via DNS') {
             steps {
-                echo 'To expose services via DNS, run `minikube tunnel` in a separate terminal.'
+                echo 'To expose services via DNS, run `minikube tunnel` in separate terminal.'
                 echo 'After that, access the app at: http://retinopathy.local'
             }
         }

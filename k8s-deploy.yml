@@ -1,7 +1,7 @@
 ---
 - name: Deploy to Kubernetes with Minikube
-  hosts: local
-  become: false  # Do not use root to avoid driver issues
+  hosts: localhost
+  become: true
 
   vars:
     workspace_dir: "{{ lookup('env', 'WORKSPACE') | default('/var/lib/jenkins/workspace/retina') }}"
@@ -18,6 +18,7 @@
         path: "{{ item }}"
         state: directory
         mode: '0755'
+        recurse: yes
       loop:
         - "{{ kube_dir }}"
         - "{{ minikube_dir }}"
@@ -29,14 +30,6 @@
         --force
         --install-addons=true
         --delete-on-failure
-      environment:
-        MINIKUBE_HOME: "{{ workspace_dir }}"
-        KUBECONFIG: "{{ kube_dir }}/config"
-
-    - name: Apply Kubernetes manifests from local k8s/ folder
-      command: kubectl apply -f k8s/
-      args:
-        chdir: "{{ workspace_dir }}"
       environment:
         MINIKUBE_HOME: "{{ workspace_dir }}"
         KUBECONFIG: "{{ kube_dir }}/config"

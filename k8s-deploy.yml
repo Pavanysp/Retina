@@ -2,26 +2,21 @@
   hosts: localhost
   vars:
     minikube_home: "{{ lookup('env', 'WORKSPACE') }}"
+    kube_config: "{{ minikube_home }}/.kube/config"
   tasks:
 
     - name: Delete Minikube cluster if exists
       shell: minikube delete
+      environment:
+        MINIKUBE_HOME: "{{ minikube_home }}"
+        KUBECONFIG: "{{ kube_config }}"
       ignore_errors: yes
-
-    - name: Create ~/.kube and ~/.minikube directories
-      file:
-        path: "{{ item }}"
-        state: directory
-        mode: '0755'
-      loop:
-        - "{{ minikube_home }}/.kube"
-        - "{{ minikube_home }}/.minikube"
 
     - name: Set environment variables for Minikube
       set_fact:
         minikube_env:
           MINIKUBE_HOME: "{{ minikube_home }}"
-          KUBECONFIG: "{{ minikube_home }}/.kube/config"
+          KUBECONFIG: "{{ kube_config }}"
 
     - name: Disable fs.protected_regular to allow locking temp files
       become: yes

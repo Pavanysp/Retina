@@ -69,7 +69,7 @@ pipeline {
             steps {
                 sh '''
                 echo "📦 Running Docker Compose Ansible Playbook"
-                ansible-playbook -i hosts.ini compose-deploy.yml
+                ansible-playbook -i hosts.ini deploy.yml
                 '''
             }
         }

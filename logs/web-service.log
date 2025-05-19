@@ -22,3 +22,12 @@
 {"timestamp": "2025-05-17T15:12:26+0000", "service": "web-service", "level": "info", "message": "Saved uploaded image: f1180ae2-910b-4e36-b111-cf588ed562d3_Severe_DR.png", "host": "627094e6b9f1"}
 {"timestamp": "2025-05-17T15:12:26+0000", "service": "web-service", "level": "info", "message": "Prediction successful - Result: Moderate DR, Confidence: 39.24%, File: f1180ae2-910b-4e36-b111-cf588ed562d3_Severe_DR.png", "host": "627094e6b9f1"}
 {"timestamp": "2025-05-17T15:13:01+0000", "service": "web-service", "level": "info", "message": "Accessed index page", "host": "627094e6b9f1"}
+{"timestamp": "2025-05-19T05:25:57+0000", "service": "web-service", "level": "info", "message": "Logger configured successfully", "host": "31bec2afc70e"}
+{"timestamp": "2025-05-19T05:25:57+0000", "service": "web-service", "level": "info", "message": "Starting web service", "host": "31bec2afc70e"}
+{"timestamp": "2025-05-19T05:32:49+0000", "service": "web-service", "level": "info", "message": "Accessed index page", "host": "31bec2afc70e"}
+{"timestamp": "2025-05-19T05:32:54+0000", "service": "web-service", "level": "info", "message": "Saved uploaded image: 2a6c93b7-6606-47e0-aec9-817cd111f8db_Mild_DR_3.png", "host": "31bec2afc70e"}
+{"timestamp": "2025-05-19T05:33:00+0000", "service": "web-service", "level": "info", "message": "Prediction successful - Result: Moderate DR, Confidence: 34.29%, File: 2a6c93b7-6606-47e0-aec9-817cd111f8db_Mild_DR_3.png", "host": "31bec2afc70e"}
+{"timestamp": "2025-05-19T05:33:11+0000", "service": "web-service", "level": "info", "message": "Accessed index page", "host": "31bec2afc70e"}
+{"timestamp": "2025-05-19T05:39:23+0000", "service": "web-service", "level": "info", "message": "Saved uploaded image: baae4194-4739-4c12-9761-f3547066dbe4_Mild_DR_3.png", "host": "31bec2afc70e"}
+{"timestamp": "2025-05-19T05:39:23+0000", "service": "web-service", "level": "info", "message": "Prediction successful - Result: Moderate DR, Confidence: 34.29%, File: baae4194-4739-4c12-9761-f3547066dbe4_Mild_DR_3.png", "host": "31bec2afc70e"}
+{"timestamp": "2025-05-19T05:39:34+0000", "service": "web-service", "level": "info", "message": "Accessed index page", "host": "31bec2afc70e"}

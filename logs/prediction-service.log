@@ -59,3 +59,25 @@
 {"timestamp": "2025-05-19T07:43:11+0000", "service": "prediction-service", "level": "info", "message": "Processing file: dee055f8-aa71-4982-b3d2-84b395b8fe9c_Moderate_DR_2.png", "host": "5c1045d88f21"}
 {"timestamp": "2025-05-19T07:43:11+0000", "service": "prediction-service", "level": "info", "message": "Making prediction...", "host": "5c1045d88f21"}
 {"timestamp": "2025-05-19T07:43:11+0000", "service": "prediction-service", "level": "info", "message": "Prediction successful - Class: 2 (Moderate DR), Confidence: 57.09%, File: dee055f8-aa71-4982-b3d2-84b395b8fe9c_Moderate_DR_2.png", "host": "5c1045d88f21"}
+{"timestamp": "2025-05-19T12:14:33+0000", "service": "prediction-service", "level": "info", "message": "Logger configured successfully", "host": "0d0337514b73"}
+{"timestamp": "2025-05-19T12:14:33+0000", "service": "prediction-service", "level": "info", "message": "Loading model...", "host": "0d0337514b73"}
+{"timestamp": "2025-05-19T12:14:38+0000", "service": "prediction-service", "level": "info", "message": "Model loaded successfully from retina_ensemble_model.h5", "host": "0d0337514b73"}
+{"timestamp": "2025-05-19T12:14:38+0000", "service": "prediction-service", "level": "info", "message": "Model summary: None", "host": "0d0337514b73"}
+{"timestamp": "2025-05-19T12:14:38+0000", "service": "prediction-service", "level": "info", "message": "Starting prediction service on port 5001", "host": "0d0337514b73"}
+{"timestamp": "2025-05-19T12:22:33+0000", "service": "prediction-service", "level": "info", "message": "Logger configured successfully", "host": "0d0337514b73"}
+{"timestamp": "2025-05-19T12:22:33+0000", "service": "prediction-service", "level": "info", "message": "Loading model...", "host": "0d0337514b73"}
+{"timestamp": "2025-05-19T12:22:37+0000", "service": "prediction-service", "level": "info", "message": "Model loaded successfully from retina_ensemble_model.h5", "host": "0d0337514b73"}
+{"timestamp": "2025-05-19T12:22:37+0000", "service": "prediction-service", "level": "info", "message": "Model summary: None", "host": "0d0337514b73"}
+{"timestamp": "2025-05-19T12:22:37+0000", "service": "prediction-service", "level": "info", "message": "Starting prediction service on port 5001", "host": "0d0337514b73"}
+{"timestamp": "2025-05-19T12:22:46+0000", "service": "prediction-service", "level": "info", "message": "Processing file: 88cd4ccb-4126-466c-8d8f-4a953eef7083_Moderate_DR_2.png", "host": "0d0337514b73"}
+{"timestamp": "2025-05-19T12:22:46+0000", "service": "prediction-service", "level": "info", "message": "Making prediction...", "host": "0d0337514b73"}
+{"timestamp": "2025-05-19T12:22:50+0000", "service": "prediction-service", "level": "info", "message": "Prediction successful - Class: 2 (Moderate DR), Confidence: 57.09%, File: 88cd4ccb-4126-466c-8d8f-4a953eef7083_Moderate_DR_2.png", "host": "0d0337514b73"}
+{"timestamp": "2025-05-19T12:23:28+0000", "service": "prediction-service", "level": "info", "message": "Processing file: 0b068ff3-d39b-4396-a61f-494ed8a3365d_Moderate_DR_2.png", "host": "0d0337514b73"}
+{"timestamp": "2025-05-19T12:23:28+0000", "service": "prediction-service", "level": "info", "message": "Making prediction...", "host": "0d0337514b73"}
+{"timestamp": "2025-05-19T12:23:28+0000", "service": "prediction-service", "level": "info", "message": "Prediction successful - Class: 2 (Moderate DR), Confidence: 57.09%, File: 0b068ff3-d39b-4396-a61f-494ed8a3365d_Moderate_DR_2.png", "host": "0d0337514b73"}
+{"timestamp": "2025-05-19T12:25:12+0000", "service": "prediction-service", "level": "info", "message": "Processing file: 63812331-393c-4298-aaaf-07c8377fdb52_Proliferate_DR_2.png", "host": "0d0337514b73"}
+{"timestamp": "2025-05-19T12:25:12+0000", "service": "prediction-service", "level": "info", "message": "Making prediction...", "host": "0d0337514b73"}
+{"timestamp": "2025-05-19T12:25:12+0000", "service": "prediction-service", "level": "info", "message": "Prediction successful - Class: 0 (No DR), Confidence: 61.65%, File: 63812331-393c-4298-aaaf-07c8377fdb52_Proliferate_DR_2.png", "host": "0d0337514b73"}
+{"timestamp": "2025-05-19T12:25:20+0000", "service": "prediction-service", "level": "info", "message": "Processing file: 3fe83775-bf20-4dba-b0ac-23ef8906f726_Mild_DR_3.png", "host": "0d0337514b73"}
+{"timestamp": "2025-05-19T12:25:20+0000", "service": "prediction-service", "level": "info", "message": "Making prediction...", "host": "0d0337514b73"}
+{"timestamp": "2025-05-19T12:25:20+0000", "service": "prediction-service", "level": "info", "message": "Prediction successful - Class: 2 (Moderate DR), Confidence: 34.29%, File: 3fe83775-bf20-4dba-b0ac-23ef8906f726_Mild_DR_3.png", "host": "0d0337514b73"}

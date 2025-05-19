@@ -17,7 +17,7 @@ spec:
           persistentVolumeClaim:
             claimName: upload-pvc
         - name: web-logs
-          emptyDir: {}  # New volume for logs
+          emptyDir: {}
       containers:
         - name: web
           image: pavan020504/web-service
@@ -27,8 +27,15 @@ spec:
           envFrom:
             - configMapRef:
                 name: web-config
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
           volumeMounts:
             - name: upload-volume
               mountPath: /app/static/uploads
             - name: web-logs
-              mountPath: /var/log/app  # Web app logs here
+              mountPath: /var/log/app

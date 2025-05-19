@@ -126,27 +126,3 @@
                 console.error(err.message);
             });
         }
-
-        // 🔁 Doctor Login → Reload model from microservice running at http://localhost:6001/reload
-        function doctorLogin() {
-            const status = document.getElementById('reload-status');
-            status.innerHTML = "🔄 Reloading model...";
-            fetch('http://localhost:6001', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' }
-            })
-            .then(res => {
-                if (!res.ok) throw new Error("Reload failed");
-                return res.json();
-            })
-            .then(data => {
-                status.innerHTML = `✅ ${data.message || 'Model reloaded successfully.'}`;
-            })
-            .catch(err => {
-                console.error(err);
-                status.innerHTML = "❌ Error reloading model.";
-            });
-        }
-    </script>
-</body>
-</html>

@@ -1,27 +1,37 @@
----
-- name: Deploy services to Minikube
+- name: Deploy to Kubernetes with Minikube
   hosts: localhost
-  become: false
   vars:
-    kube_config: "{{ lookup('env', 'KUBECONFIG') | default('~/.kube/config', true) }}"
+    minikube_home: "{{ lookup('env', 'WORKSPACE') }}"
   tasks:
 
-    - name: Set KUBECONFIG environment variable
-      ansible.builtin.set_env:
-        KUBECONFIG: "{{ kube_config }}"
-
-    - name: Check Kubernetes access
-      shell: |
-        kubectl version --client
-        kubectl get nodes
-      register: kube_output
+    - name: Delete Minikube cluster if exists
+      shell: minikube delete
       ignore_errors: yes
 
-    - name: Show Kubernetes output
-      debug:
-        var: kube_output.stdout_lines
+    - name: Create ~/.kube and ~/.minikube directories
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+      loop:
+        - "{{ minikube_home }}/.kube"
+        - "{{ minikube_home }}/.minikube"
 
-    - name: Apply all Kubernetes YAML files
+    - name: Set environment variables for Minikube
+      set_fact:
+        minikube_env:
+          MINIKUBE_HOME: "{{ minikube_home }}"
+          KUBECONFIG: "{{ minikube_home }}/.kube/config"
+
+    - name: Disable fs.protected_regular to allow locking temp files
+      become: yes
+      command: sysctl fs.protected_regular=0
+
+    - name: Start Minikube using Docker driver
+      environment: "{{ minikube_env }}"
+      shell: |
+        minikube start --driver=docker --install-addons=true --delete-on-failure
+
+    - name: Apply all Kubernetes manifests from ./k8s directory
+      environment: "{{ minikube_env }}"
       shell: kubectl apply -f ./k8s
-      args:
-        chdir: "{{ playbook_dir }}"

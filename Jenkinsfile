@@ -5,7 +5,6 @@ pipeline {
         DOCKER_IMAGE = "pavan020504/web-service"
         PREDICTION_IMAGE = "pavan020504/prediction-service"
         WORKSPACE_DIR = "/var/lib/jenkins/workspace/retina"
-        KUBECONFIG_PATH = "$WORKSPACE_DIR/.kube/config"
     }
 
     stages {
@@ -18,13 +17,16 @@ pipeline {
         stage('Fix Jenkins Docker & Minikube Permissions') {
             steps {
                 sh '''
-                echo "🛠️ Fixing Jenkins user permissions..."
+                echo "Fixing Jenkins user permissions..."
 
+                # Add Jenkins to docker group
                 sudo usermod -aG docker jenkins
 
+                # Create required directories for minikube & kube if not present
                 sudo mkdir -p $WORKSPACE_DIR/.kube
                 sudo mkdir -p $WORKSPACE_DIR/.minikube
 
+                # Set ownership and permissions
                 sudo chown -R jenkins:docker $WORKSPACE_DIR/.kube
                 sudo chown -R jenkins:docker $WORKSPACE_DIR/.minikube
 
@@ -37,7 +39,7 @@ pipeline {
         stage('Build Docker Images') {
             steps {
                 sh '''
-                echo "🐳 Building Docker images..."
+                echo "Building Docker images..."
                 cd web-service
                 docker build -t ${DOCKER_IMAGE} .
                 cd ../prediction-service
@@ -54,10 +56,10 @@ pipeline {
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
                     sh '''
-                    echo "🔐 Logging in to Docker Hub..."
+                    echo "Logging in to Docker Hub..."
                     echo "${DOCKER_PASS}" | docker login -u "${DOCKER_USER}" --password-stdin
 
-                    echo "📤 Pushing Docker images to Docker Hub..."
+                    echo "Pushing Docker images to Docker Hub..."
                     docker push ${DOCKER_IMAGE}
                     docker push ${PREDICTION_IMAGE}
                     '''
@@ -68,26 +70,8 @@ pipeline {
         stage('Run Docker Compose Playbook') {
             steps {
                 sh '''
-                echo "📦 Running Docker Compose Ansible Playbook"
+                echo "Running Docker Compose Ansible Playbook"
                 ansible-playbook -i hosts.ini deploy.yml
-                '''
-            }
-        }
-
-        stage('Start Minikube') {
-            steps {
-                sh '''
-                echo "🚀 Starting Minikube..."
-                minikube status || minikube start --driver=docker
-
-                echo "🔧 Setting up KUBECONFIG..."
-                mkdir -p $WORKSPACE_DIR/.kube
-                mkdir -p $WORKSPACE_DIR/.minikube
-
-                cp -r ~/.kube/* $WORKSPACE_DIR/.kube || true
-                cp -r ~/.minikube/* $WORKSPACE_DIR/.minikube || true
-
-                export KUBECONFIG=$KUBECONFIG_PATH
                 '''
             }
         }
@@ -95,8 +79,7 @@ pipeline {
         stage('Run Kubernetes Minikube Playbook') {
             steps {
                 sh '''
-                echo "☸️ Running Kubernetes Minikube Ansible Playbook"
-                export KUBECONFIG=$KUBECONFIG_PATH
+                echo "Running Kubernetes Minikube Ansible Playbook"
                 ansible-playbook -i hosts.ini k8s-deploy.yml
                 '''
             }

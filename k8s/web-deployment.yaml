@@ -12,6 +12,12 @@ spec:
       labels:
         app: web
     spec:
+      volumes:
+        - name: upload-volume
+          persistentVolumeClaim:
+            claimName: upload-pvc
+        - name: web-logs
+          emptyDir: {}  # New volume for logs
       containers:
         - name: web
           image: pavan020504/web-service
@@ -23,8 +29,6 @@ spec:
                 name: web-config
           volumeMounts:
             - name: upload-volume
-              mountPath: /app/static/uploads  # Path where your app expects the uploads
-      volumes:
-        - name: upload-volume
-          persistentVolumeClaim:
-            claimName: upload-pvc  # Link to the PVC defined above
+              mountPath: /app/static/uploads
+            - name: web-logs
+              mountPath: /var/log/app  # Web app logs here

@@ -1,0 +1,26 @@
+---
+- name: Deploy to Minikube
+  hosts: localhost
+  become: yes
+
+  tasks:
+    - name: Delete Minikube if it exists
+      shell: minikube delete || true
+
+    - name: Create necessary directories
+      shell: |
+        mkdir -p ~/.minikube
+        mkdir -p ~/.kube
+
+    - name: Start Minikube using Docker driver
+      shell: |
+        minikube start --driver=docker \
+          --wait=none \
+          --force \
+          --install-addons=true \
+          --delete-on-failure
+
+    - name: Apply Kubernetes manifests from local k8s/ folder
+      shell: kubectl apply -f ./k8s/ --validate=false
+      args:
+        chdir: "{{ playbook_dir }}"

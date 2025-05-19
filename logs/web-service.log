@@ -31,3 +31,9 @@
 {"timestamp": "2025-05-19T05:39:23+0000", "service": "web-service", "level": "info", "message": "Saved uploaded image: baae4194-4739-4c12-9761-f3547066dbe4_Mild_DR_3.png", "host": "31bec2afc70e"}
 {"timestamp": "2025-05-19T05:39:23+0000", "service": "web-service", "level": "info", "message": "Prediction successful - Result: Moderate DR, Confidence: 34.29%, File: baae4194-4739-4c12-9761-f3547066dbe4_Mild_DR_3.png", "host": "31bec2afc70e"}
 {"timestamp": "2025-05-19T05:39:34+0000", "service": "web-service", "level": "info", "message": "Accessed index page", "host": "31bec2afc70e"}
+{"timestamp": "2025-05-19T06:48:58+0000", "service": "web-service", "level": "info", "message": "Saved uploaded image: 34c88832-0811-4606-a2f1-701eecc2d5dc_Mild_DR_3.png", "host": "31bec2afc70e"}
+{"timestamp": "2025-05-19T06:48:58+0000", "service": "web-service", "level": "info", "message": "Prediction successful - Result: Moderate DR, Confidence: 34.29%, File: 34c88832-0811-4606-a2f1-701eecc2d5dc_Mild_DR_3.png", "host": "31bec2afc70e"}
+{"timestamp": "2025-05-19T06:49:21+0000", "service": "web-service", "level": "info", "message": "Accessed index page", "host": "31bec2afc70e"}
+{"timestamp": "2025-05-19T07:43:11+0000", "service": "web-service", "level": "info", "message": "Saved uploaded image: dee055f8-aa71-4982-b3d2-84b395b8fe9c_Moderate_DR_2.png", "host": "31bec2afc70e"}
+{"timestamp": "2025-05-19T07:43:11+0000", "service": "web-service", "level": "info", "message": "Prediction successful - Result: Moderate DR, Confidence: 57.09%, File: dee055f8-aa71-4982-b3d2-84b395b8fe9c_Moderate_DR_2.png", "host": "31bec2afc70e"}
+{"timestamp": "2025-05-19T07:43:17+0000", "service": "web-service", "level": "info", "message": "Accessed index page", "host": "31bec2afc70e"}

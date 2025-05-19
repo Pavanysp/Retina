@@ -12,9 +12,15 @@ spec:
       labels:
         app: prediction
     spec:
+      volumes:
+        - name: prediction-logs
+          emptyDir: {}  # Shared volume for logs
       containers:
         - name: prediction
           image: pavan020504/prediction-service
           imagePullPolicy: Always
           ports:
             - containerPort: 5001
+          volumeMounts:
+            - name: prediction-logs
+              mountPath: /var/log/app  # Your app writes logs here

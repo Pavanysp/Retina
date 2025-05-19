@@ -4,9 +4,6 @@ pipeline {
     environment {
         DOCKER_IMAGE = "pavan020504/web-service"
         PREDICTION_IMAGE = "pavan020504/prediction-service"
-        MINIKUBE_HOME = "${env.WORKSPACE}/.minikube"
-        CHANGE_MINIKUBE_NONE_USER = "true"
-        KUBECONFIG = "${env.WORKSPACE}/.kube/config"
     }
 
     stages {
@@ -47,49 +44,21 @@ pipeline {
             }
         }
 
-        stage('Run Ansible Playbook') {
+        stage('Run Docker Compose Playbook') {
             steps {
                 sh '''
-                echo "Running Ansible Playbook"
+                echo "Running Docker Compose Playbook"
                 ansible-playbook -i hosts.ini deploy.yml
                 '''
             }
         }
 
-        stage('Start Minikube') {
+        stage('Run Kubernetes Minikube Playbook') {
             steps {
                 sh '''
-                echo "Starting Minikube using Docker driver (no SSH)"
-                
-                minikube delete || true
-
-                mkdir -p $MINIKUBE_HOME
-                mkdir -p $(dirname $KUBECONFIG)
-
-                minikube start --driver=docker \
-                    --wait=none \
-                    --force \
-                    --install-addons=true \
-                    --delete-on-failure
-
-                echo "Minikube started successfully"
+                echo "Running Kubernetes Playbook via Ansible"
+                ansible-playbook -i hosts.ini k8s-deploy.yml
                 '''
-            }
-        }
-
-        stage('Apply Kubernetes Configs') {
-            steps {
-                sh '''
-                echo "Applying Kubernetes manifests"
-                kubectl apply -f k8s/ --validate=false
-                '''
-            }
-        }
-
-        stage('Expose via DNS') {
-            steps {
-                echo 'To expose services via DNS, run `minikube tunnel` in  a separate terminal.'
-                echo 'After that, access the app at: https://retinopathy.local'
             }
         }
     }

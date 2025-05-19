@@ -5,6 +5,7 @@ pipeline {
         DOCKER_IMAGE = "pavan020504/web-service"
         PREDICTION_IMAGE = "pavan020504/prediction-service"
         WORKSPACE_DIR = "/var/lib/jenkins/workspace/retina"
+        KUBECONFIG_PATH = "$WORKSPACE_DIR/.kube/config"
     }
 
     stages {
@@ -19,14 +20,11 @@ pipeline {
                 sh '''
                 echo "🛠️ Fixing Jenkins user permissions..."
 
-                # Add Jenkins to docker group
                 sudo usermod -aG docker jenkins
 
-                # Create required directories for minikube & kube if not present
                 sudo mkdir -p $WORKSPACE_DIR/.kube
                 sudo mkdir -p $WORKSPACE_DIR/.minikube
 
-                # Set ownership and permissions
                 sudo chown -R jenkins:docker $WORKSPACE_DIR/.kube
                 sudo chown -R jenkins:docker $WORKSPACE_DIR/.minikube
 
@@ -71,7 +69,25 @@ pipeline {
             steps {
                 sh '''
                 echo "📦 Running Docker Compose Ansible Playbook"
-                ansible-playbook -i hosts.ini deploy.yml
+                ansible-playbook -i hosts.ini compose-deploy.yml
+                '''
+            }
+        }
+
+        stage('Start Minikube') {
+            steps {
+                sh '''
+                echo "🚀 Starting Minikube..."
+                minikube status || minikube start --driver=docker
+
+                echo "🔧 Setting up KUBECONFIG..."
+                mkdir -p $WORKSPACE_DIR/.kube
+                mkdir -p $WORKSPACE_DIR/.minikube
+
+                cp -r ~/.kube/* $WORKSPACE_DIR/.kube || true
+                cp -r ~/.minikube/* $WORKSPACE_DIR/.minikube || true
+
+                export KUBECONFIG=$KUBECONFIG_PATH
                 '''
             }
         }
@@ -80,6 +96,7 @@ pipeline {
             steps {
                 sh '''
                 echo "☸️ Running Kubernetes Minikube Ansible Playbook"
+                export KUBECONFIG=$KUBECONFIG_PATH
                 ansible-playbook -i hosts.ini k8s-deploy.yml
                 '''
             }

@@ -43,5 +43,5 @@
     - name: Reminder to export KUBECONFIG manually
       debug:
         msg: |
-          To access kubectl from your shell, run:
+          To access kubectl from your shell, and run:
           export KUBECONFIG={{ minikube_home }}/.kube/config

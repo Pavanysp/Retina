@@ -6,6 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        #map, #results {
+            display: none;
+            margin-top: 20px;
+        }
+        .clinic-card {
+            padding: 10px;
+            background: #f4f4f4;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .highlight {
+            color: green;
+            font-weight: bold;
+        }
+        .preview {
+            max-width: 300px;
+            margin-top: 10px;
+        }
+        .back-home {
+            margin-top: 30px;
+        }
+    </style>
 </head>
 <body>
     <h1>🧠 Diabetic Retinopathy Detection</h1>
@@ -16,7 +39,7 @@
         <button type="submit">📤 Upload & Predict</button>
     </form>
 
-    <!-- RESULT -->
+    <!-- Prediction Result -->
     {% if result %}
     <div class="result">
         <h2>🩺 Prediction: <span class="highlight">{{ result }}</span> ({{ confidence }}%)</h2>
@@ -24,17 +47,15 @@
     </div>
     {% endif %}
 
-    <!-- CLINIC LOCATOR -->
+    <!-- Clinic Locator -->
     {% if disease %}
     <h2>🏥 Nearby Eye Clinics:</h2>
     <button onclick="findClinics()">🔍 Find Eye Clinics Near Me</button>
-    <div id="map"></div>
+    <div id="map" style="height: 400px;"></div>
     <div id="results">Searching for your location...</div>
     {% endif %}
 
-    
-
-    <!-- ✅ Always show Home button -->
+    <!-- Home Button -->
     <div class="back-home">
         <a href="/"><button>🔙 Go to Home</button></a>
     </div>
@@ -42,10 +63,15 @@
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
-    <!-- MAP & CLINIC LOGIC -->
+    <!-- Map & Clinic Logic -->
     <script>
         let map;
+
         function findClinics() {
+            document.getElementById('map').style.display = 'block';
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('results').innerHTML = "Searching for your location...";
+
             navigator.geolocation.getCurrentPosition(function(pos) {
                 const lat = pos.coords.latitude;
                 const lon = pos.coords.longitude;
@@ -55,6 +81,7 @@
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: '&copy; OpenStreetMap contributors'
                 }).addTo(map);
+
                 L.marker([lat, lon]).addTo(map).bindPopup("📍 You are here").openPopup();
 
                 const query = `[out:json];
@@ -66,6 +93,7 @@
                 out body;`;
 
                 const url = 'https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(query);
+
                 fetch(url)
                     .then(res => res.json())
                     .then(data => {
@@ -126,3 +154,6 @@
                 console.error(err.message);
             });
         }
+    </script>
+</body>
+</html>

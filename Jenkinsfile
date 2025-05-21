@@ -5,8 +5,7 @@ pipeline {
         DOCKER_IMAGE = "pavan020504/web-service"
         PREDICTION_IMAGE = "pavan020504/prediction-service"
         WORKSPACE_DIR = "/var/lib/jenkins/workspace/retina"
-        WORKSPACE = "${env.WORKSPACE}"  // already set by Jenkins
-        KUBECONFIG = "${env.WORKSPACE}/.kube/config"
+        
     }
 
     stages {

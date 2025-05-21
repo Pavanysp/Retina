@@ -4,10 +4,6 @@
     minikube_home: "{{ lookup('env', 'WORKSPACE') }}"
   tasks:
 
-    - name: Delete Minikube cluster if exists
-      shell: minikube delete
-      ignore_errors: yes
-
     - name: Create ~/.kube and ~/.minikube directories
       file:
         path: "{{ item }}"
@@ -27,10 +23,12 @@
       become: yes
       command: sysctl fs.protected_regular=0
 
-    - name: Start Minikube using Docker driver
+    - name: Ensure Minikube is running (start only if not already running)
       environment: "{{ minikube_env }}"
       shell: |
-        minikube start --driver=docker --install-addons=true --delete-on-failure
+        if ! minikube status | grep -q "Running"; then
+          minikube start --driver=docker --install-addons=true --delete-on-failure
+        fi
 
     - name: Apply all Kubernetes manifests from ./k8s directory
       environment: "{{ minikube_env }}"
@@ -39,5 +37,5 @@
     - name: Reminder to export KUBECONFIG manually
       debug:
         msg: |
-          To access kubectl from your shell, and run:
+          To access kubectl from your shell, run:
           export KUBECONFIG={{ minikube_home }}/.kube/config

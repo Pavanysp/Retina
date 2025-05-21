@@ -81,3 +81,9 @@
 {"timestamp": "2025-05-19T12:25:20+0000", "service": "prediction-service", "level": "info", "message": "Processing file: 3fe83775-bf20-4dba-b0ac-23ef8906f726_Mild_DR_3.png", "host": "0d0337514b73"}
 {"timestamp": "2025-05-19T12:25:20+0000", "service": "prediction-service", "level": "info", "message": "Making prediction...", "host": "0d0337514b73"}
 {"timestamp": "2025-05-19T12:25:20+0000", "service": "prediction-service", "level": "info", "message": "Prediction successful - Class: 2 (Moderate DR), Confidence: 34.29%, File: 3fe83775-bf20-4dba-b0ac-23ef8906f726_Mild_DR_3.png", "host": "0d0337514b73"}
+{"timestamp": "2025-05-19T16:04:17+0000", "service": "prediction-service", "level": "info", "message": "Processing file: 6e73e572-4b9a-4cdc-92f1-ea6e6517a6ee_Moderate_DR_5.png", "host": "0d0337514b73"}
+{"timestamp": "2025-05-19T16:04:17+0000", "service": "prediction-service", "level": "info", "message": "Making prediction...", "host": "0d0337514b73"}
+{"timestamp": "2025-05-19T16:04:17+0000", "service": "prediction-service", "level": "info", "message": "Prediction successful - Class: 0 (No DR), Confidence: 74.52%, File: 6e73e572-4b9a-4cdc-92f1-ea6e6517a6ee_Moderate_DR_5.png", "host": "0d0337514b73"}
+{"timestamp": "2025-05-19T16:04:31+0000", "service": "prediction-service", "level": "info", "message": "Processing file: 84322f75-c36d-46b1-8702-f8200428b14d_Severe_DR.png", "host": "0d0337514b73"}
+{"timestamp": "2025-05-19T16:04:31+0000", "service": "prediction-service", "level": "info", "message": "Making prediction...", "host": "0d0337514b73"}
+{"timestamp": "2025-05-19T16:04:32+0000", "service": "prediction-service", "level": "info", "message": "Prediction successful - Class: 2 (Moderate DR), Confidence: 39.24%, File: 84322f75-c36d-46b1-8702-f8200428b14d_Severe_DR.png", "host": "0d0337514b73"}

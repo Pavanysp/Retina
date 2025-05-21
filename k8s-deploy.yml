@@ -34,4 +34,10 @@
 
     - name: Apply all Kubernetes manifests from ./k8s directory
       environment: "{{ minikube_env }}"
-      shell: kubectl apply -f ./k8s
+      shell: minikube kubectl -- apply -f ./k8s
+
+    - name: Reminder to export KUBECONFIG manually
+      debug:
+        msg: |
+          To access kubectl from your shell, run:
+          export KUBECONFIG={{ minikube_home }}/.kube/config

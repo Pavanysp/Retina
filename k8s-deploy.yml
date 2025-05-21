@@ -36,6 +36,14 @@
       environment: "{{ minikube_env }}"
       shell: minikube addons enable ingress
 
+    - name: Wait for ingress-nginx-controller pod to be ready
+      environment: "{{ minikube_env }}"
+      shell: |
+        minikube kubectl -- wait --namespace ingress-nginx \
+        --for=condition=ready pod \
+        --selector=app.kubernetes.io/component=controller \
+        --timeout=120s
+
     - name: Apply all Kubernetes manifests from ./k8s directory
       environment: "{{ minikube_env }}"
       shell: minikube kubectl -- apply -f ./k8s
@@ -43,5 +51,5 @@
     - name: Reminder to export KUBECONFIG manually
       debug:
         msg: |
-          To access kubectl from your shell, and run:
+          To access kubectl from your shell, run:
           export KUBECONFIG={{ minikube_home }}/.kube/config

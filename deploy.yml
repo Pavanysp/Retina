@@ -4,7 +4,17 @@
   become: true
 
   tasks:
-    - name: Run docker-compose up directly from workspace
+    - name: Stop and remove old containers
+      command: docker-compose -f docker-compose.yml down
+      args:
+        chdir: "{{ lookup('env', 'WORKSPACE') | default('/var/lib/jenkins/workspace/Retina') }}"
+
+    - name: Pull latest images from Docker Hub
+      command: docker-compose -f docker-compose.yml pull
+      args:
+        chdir: "{{ lookup('env', 'WORKSPACE') | default('/var/lib/jenkins/workspace/Retina') }}"
+
+    - name: Start fresh containers
       command: docker-compose -f docker-compose.yml up -d
       args:
         chdir: "{{ lookup('env', 'WORKSPACE') | default('/var/lib/jenkins/workspace/Retina') }}"

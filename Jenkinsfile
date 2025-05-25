@@ -11,6 +11,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
+                deleteDir()
                 git url: 'https://github.com/Pavanysp/Retina', branch: 'main'
             }
         }
